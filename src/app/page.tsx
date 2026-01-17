@@ -9,7 +9,6 @@ import SporeEffect from "./components/SporeEffect";
 export default function Home() {
   // IDs for sections
   const sectionIds = ["home", "about", "education", "experience", "projects", "playlist", "trivia", "contact"];
-  const activeId = useScrollSpy(sectionIds, 100); // offset = 100px for sticky header
   const [isOpen, setIsOpen] = useState(false);
   const [displayPosition, setDisplayPosition] = useState({ x: 0, y: 0 });
 
