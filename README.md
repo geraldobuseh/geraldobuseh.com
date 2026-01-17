@@ -1,7 +1,7 @@
 
 Personal website and digital portfolio for Gerald Obuseh, deployed on a custom domain and built with a production-grade frontend stack.
 
-Live site: [www.geraldobuseh.com](https://geraldobuseh.com)
+Live site: [geraldobuseh.com](https://geraldobuseh.com)
 
 ## Overview
 
