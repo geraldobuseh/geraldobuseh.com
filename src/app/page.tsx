@@ -462,7 +462,7 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-8">
               <div className="p-6 border border-gray-800 rounded hover:border-secondary transition">
                 <h3 className="text-xl font-semibold mb-3">International Girls Academy LMS</h3>
-                <p className="text-neutral-400 max-w-xl text-md font-semibold tracking-[0.05em] mb-2">Developed a learning management system for the International Girls Academy using React, Node.js, and PostgreSQL.</p>
+                <p className="text-neutral-400 max-w-xl text-md font-semibold tracking-[0.05em] mb-2">Developed a Learning Management System for the International Girls Academy during JPMC’s Code for Good Hackathon, leveraging Flask and Node.js for backend services, React for the frontend, and Clerk for secure authentication.</p>
                 <div className="flex gap-3">
                   <a href="https://www.theinternationalgirlsacademy.com/" className="text-secondary hover:underline text-sm font-semibold">View Project →</a>
                   <a href="https://github.com/cfgtexas25/Team-37" className="text-gray-500 hover:text-secondary text-sm font-semibold">GitHub →</a>
@@ -470,7 +470,7 @@ export default function Home() {
               </div>
               <div className="p-6 border border-gray-800 rounded hover:border-secondary transition">
                 <h3 className="text-xl font-semibold mb-3">TickerStats</h3>
-                <p className="text-neutral-400 max-w-xl text-md font-semibold tracking-[0.05em] mb-2">Developed a stock market simulator using React, Node.js, and PostgreSQL.</p>
+                <p className="text-neutral-400 max-w-xl text-md font-semibold tracking-[0.05em] mb-2">Built a real-time financial analytics web application to surface actionable statistics and market insights across multiple financial instruments, leveraging a React frontend, a Flask-based backend, and MongoDB for scalable data persistence.</p>
                 <div className="flex gap-3">
                   <a href="https://tickerstats-1.onrender.com/" className="text-secondary hover:underline text-sm font-semibold">View Project →</a>
                   <a href="https://github.com/geraldobuseh/tickerstats" className="text-gray-500 hover:text-secondary text-sm font-semibold">GitHub →</a>
@@ -486,7 +486,7 @@ export default function Home() {
               </div>
               <div className="p-6 border border-gray-800 rounded hover:border-secondary transition">
                 <h3 className="text-xl font-semibold mb-3">LiveWeather</h3>
-                <p className="text-neutral-400 max-w-xl text-md font-semibold tracking-[0.05em] mb-2">Developed a weather app using React, Node.js, and PostgreSQL.</p>
+                <p className="text-neutral-400 max-w-xl text-md font-semibold tracking-[0.05em] mb-2">Developed a weather app using React, Node.js, and OpenWeatherMap API.</p>
                 <div className="flex gap-3">
                   <a href="https://geraldobuseh.github.io/weather-app/" className="text-secondary hover:underline text-sm font-semibold">View Project →</a>
                   <a href="https://github.com/geraldobuseh/weather-app" className="text-gray-500 hover:text-secondary text-sm font-semibold">GitHub →</a>
