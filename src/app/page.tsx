@@ -359,7 +359,7 @@ export default function Home() {
               <div className="text-neutral-300 max-w-3xl text-sm font-semibold tracking-[0.06em] opacity-80">
                 <p className="mb-3">
                   I'm originally from Delta State, Nigeria, and currently studying Computer Science and Mathematics at Texas State University, 
-                  where I focus on building strong technical foundations with real-world leverage.
+                  where I focus on building strong technical foundations with real world leverage.
                 </p>
                 <p className="mb-3">
                   My path into technology started with curiosity about how systems behave under pressure and how thoughtful design can make them 
@@ -367,7 +367,7 @@ export default function Home() {
                 </p>
                 <p>
                   Outside of coding, I enjoy playing soccer, a discipline I've practiced since early childhood in Nigeria. Playing has shaped how I think about positioning, timing, and decision-making under pressure. 
-                  I also enjoy competitive, systems-driven games such as EAFC and Mortal Kombat, which reward pattern recognition 
+                  I also enjoy competitive, systems driven games such as EAFC and Mortal Kombat, which reward pattern recognition 
                   and precise execution.
                 </p>
               </div>
@@ -461,8 +461,8 @@ export default function Home() {
             <h2 className="text-3xl font-bold mb-6 text-secondary">Selected Projects</h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="p-6 border border-gray-800 rounded hover:border-secondary transition">
-                <h3 className="text-xl font-semibold mb-3">International Girls' Academy LMS</h3>
-                <p className="text-neutral-400 max-w-xl text-md font-semibold tracking-[0.05em] mb-2">Developed a learning management system for the International Girls' Academy using React, Node.js, and PostgreSQL.</p>
+                <h3 className="text-xl font-semibold mb-3">International Girls Academy LMS</h3>
+                <p className="text-neutral-400 max-w-xl text-md font-semibold tracking-[0.05em] mb-2">Developed a learning management system for the International Girls Academy using React, Node.js, and PostgreSQL.</p>
                 <div className="flex gap-3">
                   <a href="https://www.theinternationalgirlsacademy.com/" className="text-secondary hover:underline text-sm font-semibold">View Project →</a>
                   <a href="https://github.com/cfgtexas25/Team-37" className="text-gray-500 hover:text-secondary text-sm font-semibold">GitHub →</a>
@@ -497,10 +497,10 @@ export default function Home() {
 
           {/* Playlist */}
           <section id="playlist" className="py-24">
-            <h2 className="text-3xl font-bold mb-6 text-secondary">Gerald's Playlist</h2>
+            <h2 className="text-3xl font-bold mb-6 text-secondary">Gerald&apos;s Playlist</h2>
             <div className="max-w-xl">
               <p className="text-neutral-400 mb-4 font-light text-sm tracking-[0.09em]">
-                A personally curated selection of tracks I'm currently listening to                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                A personally curated selection of tracks I&apos;m currently listening to                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
               </p>
               <div className="border border-gray-800 rounded-lg p-6 hover:border-secondary transition">
                 <iframe
