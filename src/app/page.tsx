@@ -358,7 +358,7 @@ export default function Home() {
               
               <div className="text-neutral-300 max-w-3xl text-sm font-semibold tracking-[0.06em] opacity-80">
                 <p className="mb-3">
-                  I'm originally from Delta State, Nigeria, and currently studying Computer Science and Mathematics at Texas State University, 
+                  I&apos;m originally from Delta State, Nigeria, and currently studying Computer Science and Mathematics at Texas State University, 
                   where I focus on building strong technical foundations with real world leverage.
                 </p>
                 <p className="mb-3">
@@ -366,7 +366,7 @@ export default function Home() {
                   resilient.
                 </p>
                 <p>
-                  Outside of coding, I enjoy playing soccer, a discipline I've practiced since early childhood in Nigeria. Playing has shaped how I think about positioning, timing, and decision-making under pressure. 
+                  Outside of coding, I enjoy playing soccer, a discipline I&apos;ve practiced since early childhood in Nigeria. Playing has shaped how I think about positioning, timing, and decision-making under pressure. 
                   I also enjoy competitive, systems driven games such as EAFC and Mortal Kombat, which reward pattern recognition 
                   and precise execution.
                 </p>
