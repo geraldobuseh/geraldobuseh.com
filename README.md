@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+Personal website and digital portfolio for Gerald Obuseh, deployed on a custom domain and built with a production-grade frontend stack.
 
-First, run the development server:
+Live site: [www.geraldobuseh.com](https://geraldobuseh.com)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This repository contains the source code for my personal website, designed as a high-performance, scalable platform for showcasing software engineering projects, experience, and technical depth.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The site is deployed on a custom-owned domain, reflecting long-term ownership, production intent, and professional presence rather than temporary hosting.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tech Stack
 
-## Learn More
+Next.js – App Router–based React framework for server-side rendering and static generation
 
-To learn more about Next.js, take a look at the following resources:
+React – Component-driven UI architecture
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+TypeScript – Strong typing for reliability and maintainability
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Tailwind CSS – Utility-first styling for rapid iteration
 
-## Deploy on Vercel
+PostCSS – CSS optimization and transformation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Vercel – Static hosting with CI-driven deployments
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Custom Domain (geraldobuseh.com) – Independent production hosting
+
+## Features
+
+Custom domain–backed production deployment
+
+Responsive, mobile-first design
+
+Clean typography and structured visual hierarchy
+
+Optimized static generation for performance
+
+Maintainable, modular component structure
+
+## Project Structure
+
+src/app – Application routes and layout (Next.js App Router)
+
+public – Static assets and metadata
+
+tailwind.config.ts – Tailwind configuration
+
+next.config.ts – Next.js configuration
+
+tsconfig.json – TypeScript configuration
+
+
+#### The site is deployed via Vercel and mapped to a custom-owned domain.
