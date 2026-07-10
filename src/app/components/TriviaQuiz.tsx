@@ -152,13 +152,13 @@ export default function TriviaQuiz() {
 
   if (showScore) {
     return (
-      <div className="border border-gray-800 rounded-lg p-8 hover:border-secondary transition">
-        <h2 className="text-2xl font-semibold mb-6 text-center">
+      <div className="theme-card border rounded-lg p-5 sm:p-8 transition">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-center">
           {getScoreMessage()}
         </h2>
         <button
           onClick={startQuiz}
-          className="w-full border border-secondary text-secondary px-6 py-3 rounded hover:bg-secondary hover:text-black transition"
+          className="theme-button w-full border px-6 py-3 rounded transition"
         >
           Play Again
         </button>
@@ -170,8 +170,8 @@ export default function TriviaQuiz() {
   const questionNumber = currentQuestionIndex + 1;
 
   return (
-    <div className="border border-gray-800 rounded-lg p-8 hover:border-secondary transition">
-      <h2 className="text-xl font-semibold mb-6 text-neutral-300 tracking-[2.2em] ">
+    <div className="theme-card border rounded-lg p-5 sm:p-8 transition">
+      <h2 className="theme-copy text-lg sm:text-xl font-semibold mb-6 tracking-[0.04em] sm:tracking-[0.12em]">
         {questionNumber}. {currentQuestion.question}
       </h2>
       <div className="space-y-3 mb-6 ">
@@ -186,14 +186,14 @@ export default function TriviaQuiz() {
               key={index}
               onClick={() => handleAnswerClick(index, isCorrect)}
               disabled={selectedAnswer !== null}
-              className={`w-full text-neutral-400 text-left p-4 rounded border transition ${
+              className={`w-full text-left p-3 sm:p-4 rounded border transition ${
                 showCorrect
                   ? "bg-green-900/30 border-green-500 text-green-300"
                   : showIncorrect
                   ? "bg-red-900/30 border-red-500 text-red-300"
                   : selectedAnswer !== null
                   ? "border-gray-700 text-gray-500 cursor-not-allowed"
-                  : "border-gray-800 text-gray-300 hover:border-secondary hover:text-secondary"
+                  : "theme-card hover:border-secondary hover:text-secondary"
               }`}
             >
               {answer.text}
@@ -204,7 +204,7 @@ export default function TriviaQuiz() {
       {showNext && (
         <button
           onClick={handleNext}
-          className="w-full border border-secondary text-secondary px-6 py-3 rounded hover:bg-secondary hover:text-black transition"
+          className="theme-button w-full border px-6 py-3 rounded transition"
         >
           Next
         </button>

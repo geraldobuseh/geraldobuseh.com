@@ -17,7 +17,7 @@ export default function SporeEffect() {
   useEffect(() => {
     // Generate fire sparks with random properties
     const generateSparks = () => {
-      const sparkCount = 20;
+      const sparkCount = 15;
       const newSparks: Spark[] = [];
 
       for (let i = 0; i < sparkCount; i++) {
@@ -40,7 +40,7 @@ export default function SporeEffect() {
   }, []);
 
   return (
-    <div className="fixed bottom-0 left-10 w-15 h-10 pointer-events-none z-15 overflow-visible">
+    <div className="spore-effect fixed bottom-0 left-10 w-15 h-10 pointer-events-none z-15 overflow-visible">
       {sparks.map((spark) => (
         <div
           key={spark.id}
@@ -48,8 +48,8 @@ export default function SporeEffect() {
           style={{
             width: `${spark.width}px`,
             height: `${spark.height}px`,
-            background: `linear-gradient(to top, rgba(108, 173, 223, 0.9) 0%, rgba(108, 173, 223, 0.7) 40%, rgba(108, 173, 223, 0.4) 70%, transparent 100%)`,
-            boxShadow: `0 0 ${spark.width * 5}px ${spark.width * 2}px rgba(108, 173, 223, 0.8), 0 0 ${spark.width * 5}px ${spark.width * 2}px rgba(108, 173, 223, 0.6)`,
+            background: "linear-gradient(to top, var(--spore-strong) 0%, var(--spore-medium) 40%, var(--spore-soft) 70%, transparent 100%)",
+            boxShadow: `0 0 ${spark.width * 5}px ${spark.width * 2}px var(--spore-glow-strong), 0 0 ${spark.width * 5}px ${spark.width * 2}px var(--spore-glow-soft)`,
             borderRadius: "50% 50% 50% 50% / 50% 50% 40% 40%", // Elongated oval shape
             transformOrigin: "50% 100%", // Transform from bottom center
             "--spark-angle": `${spark.angle}deg`,
@@ -67,4 +67,5 @@ export default function SporeEffect() {
     </div>
   );
 }
+
 

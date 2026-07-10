@@ -2,15 +2,33 @@
 import { useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import Image from "next/image";
-import { useScrollSpy } from "./hooks/useScrollSpy";
 import TriviaQuiz from "./components/TriviaQuiz";
 import SporeEffect from "./components/SporeEffect";
 
 export default function Home() {
-  // IDs for sections
-  const sectionIds = ["home", "about", "education", "experience", "projects", "playlist", "trivia", "contact"];
+  const navItems = [
+    { id: "about", label: "About" },
+    { id: "education", label: "Education" },
+    { id: "certifications", label: "Certifications" },
+    { id: "experience", label: "Experience" },
+    { id: "projects", label: "Projects" },
+    { id: "skills", label: "Skills" },
+    { id: "playlist", label: "Playlist" },
+    { id: "contact", label: "Contact" },
+  ];
   const [isOpen, setIsOpen] = useState(false);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [displayPosition, setDisplayPosition] = useState({ x: 0, y: 0 });
+  const aboutImageSrc = theme === "light" ? "/1005.webp" : "/1018.webp";
+
+  useEffect(() => {
+    setSiteTheme("dark");
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle("menu-open", isOpen);
+    return () => document.body.classList.remove("menu-open");
+  }, [isOpen]);
 
   useEffect(() => {
     let animationFrameId: number;
@@ -41,6 +59,52 @@ export default function Home() {
     };
   }, []);
 
+  const setSiteTheme = (nextTheme: "light" | "dark") => {
+    document.documentElement.dataset.theme = nextTheme;
+    document.documentElement.classList.toggle("light-mode", nextTheme === "light");
+    window.localStorage.setItem("theme", nextTheme);
+    setTheme(nextTheme);
+  };
+
+  const handleThemePress = (nextTheme: "light" | "dark") => {
+    return () => setSiteTheme(nextTheme);
+  };
+
+  const ThemeToggle = ({ className = "" }: { className?: string }) => (
+    <div
+      className={`theme-switch inline-flex items-center rounded-full border p-1 ${className}`}
+      role="radiogroup"
+      aria-label="Color theme"
+    >
+      <button
+        type="button"
+        role="radio"
+        aria-checked={theme === "light"}
+        data-theme-choice="light"
+        onPointerDown={handleThemePress("light")}
+        onMouseDown={handleThemePress("light")}
+        onTouchStart={handleThemePress("light")}
+        onClick={handleThemePress("light")}
+        className="theme-switch-option"
+      >
+        Light
+      </button>
+      <button
+        type="button"
+        role="radio"
+        aria-checked={theme === "dark"}
+        data-theme-choice="dark"
+        onPointerDown={handleThemePress("dark")}
+        onMouseDown={handleThemePress("dark")}
+        onTouchStart={handleThemePress("dark")}
+        onClick={handleThemePress("dark")}
+        className="theme-switch-option"
+      >
+        Dark
+      </button>
+    </div>
+  );
+
   return (
     <>
       {/* Spore effect */}
@@ -48,43 +112,41 @@ export default function Home() {
       
       {/* Cursor light effect */}
       <div
-        className="fixed pointer-events-none"
+        className="cursor-light fixed pointer-events-none"
         style={{
           left: `${displayPosition.x}px`,
           top: `${displayPosition.y}px`,
           transform: "translate(-50%, -50%)",
-          width: "clamp(200px, 30vw, 300px)",
-          height: "clamp(150px, 30vw, 300px)",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(108, 173, 223, 0.2) 5%, rgba(108, 173, 223, 0.08) 70%, rgba(108, 173, 223, 0.08) 10%, transparent 70%)",
-          opacity: 0.7,
-          zIndex: 1,
+          zIndex: 20,
           willChange: "transform",
         }}
       />
-    <div className="tracking-wider font-light mx-auto min-h-screen max-w-screen-xl px-8 py-2 md:px-12 md:py-16 lg:py-0 relative">
+    <div className="site-shell tracking-wider font-light mx-auto min-h-screen max-w-screen-xl px-5 py-2 sm:px-7 md:px-10 md:py-12 lg:px-12 lg:py-0 relative">
 
-      <div className="justify-between border-r border-slate-800 p-6 text-white lg:flex lg:justify-between lg:gap-4">
+      <div className="theme-border text-white lg:grid lg:min-h-screen lg:grid-cols-[minmax(260px,0.85fr)_minmax(0,1.15fr)] lg:gap-10 xl:gap-16 lg:border-r">
 
           {/* Mobile Nav */}
-        <div className="lg:hidden fixed top-0 left-0 w-full bg-black/80 backdrop-blur-md z-50">
-          <nav className="flex justify-between items-center p-4">
+        <div className="theme-mobile-nav lg:hidden fixed top-0 left-0 w-full backdrop-blur-md z-50">
+          <nav className="mobile-nav-inner flex justify-between items-center px-4 py-3 sm:px-5">
             <a className="text-lg font-semibold text-secondary" href="#home" >Gerald</a>
 
-            {/* Hamburger button */}
-            <button
-              onClick={() => setIsOpen(true)}
-              className="text-white text-2xl"
-              aria-label="Open menu"
-            >
-              <FiMenu />
-            </button>
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              {/* Hamburger button */}
+              <button
+                onClick={() => setIsOpen(true)}
+                className="text-white text-2xl"
+                aria-label="Open menu"
+              >
+                <FiMenu />
+              </button>
+            </div>
           </nav>
 
           {/* Fullscreen overlay menu with animation */}
           {isOpen && (
             <div
-              className="fixed inset-0 w-full h-screen bg-black/95 z-80 flex flex-col justify-center items-center
+              className="theme-mobile-menu mobile-menu fixed inset-0 w-full z-80 flex flex-col justify-center items-center
                         animate-fadeIn"
             >
               {/* Close button */}
@@ -96,86 +158,55 @@ export default function Home() {
                 <FiX />
               </button>
 
-              <ul className="flex flex-col gap-10 text-center h-3/4 animate-slideIn">
-                {sectionIds.map((id) => (
-                  <li key={id}>
+              <ul className="flex flex-col gap-6 sm:gap-8 text-center animate-slideIn">
+                {navItems.map((item) => (
+                  <li key={item.id}>
                     <a
-                      href={`#${id}`}
+                      href={`#${item.id}`}
                       onClick={() => setIsOpen(false)} // close after click
-                      className="text-3xl font-light tracking-widest text-white hover:text-secondary transition"
+                      className="text-2xl sm:text-3xl font-light tracking-widest text-white hover:text-secondary transition"
                     >
-                      {id.charAt(0).toUpperCase() + id.slice(1)}
+                      {item.label}
                     </a>
                   </li>
                 ))}
               </ul>
-              <p className="text-secondary text-base font-extralight tracking-widest mb-2 font-stretch-expanded">Loosely designed by Gerald</p>
+              <p className="mobile-menu-note text-secondary text-xs sm:text-sm font-extralight tracking-[0.16em] text-center mt-10 px-6">Loosely designed by Gerald</p>
             </div>
           )}
         </div>
 
         
-        <header className="lg:sticky lg:top-0 pt-15 pb-0 lg:flex lg:max-h-screen lg:w-[48%] lg:flex-col lg:justify-between lg:py-24">
+        <header className="pt-24 pb-10 sm:pt-28 lg:sticky lg:top-0 lg:flex lg:h-screen lg:min-h-[680px] lg:flex-col lg:justify-between lg:pt-14 lg:pb-20">
           
           <div> 
-            <h1 className="text-4xl font-bold tracking-tight text-slate-200 sm:text-5xl">
+            <div className="mb-8 hidden lg:block">
+              <ThemeToggle />
+            </div>
+            <h1 className="text-3xl font-bold tracking-tight text-slate-200 sm:text-3xl lg:text-4xl">
               <a href="#home" className="hover:text-secondary font-bold tracking-wide max-w-prose ">Gerald Obuseh</a>
             </h1>
-            <h2 className="text-lg font-semibold tracking-wide mt-3 opacity-80 leading-loose max-w-prose text-neutral-300">
+            <h2 className="theme-copy text-lg font-semibold tracking-wide mt-3 opacity-80 leading-loose max-w-prose">
               Software Engineer
             </h2>
-            <p className="text-neutral-300 text-sm font-semibold tracking-[0.28em] mt-3 opacity-80">
-              I design and engineer high-performance systems where clarity, speed, and intent compound.
+            <p className="theme-copy text-sm font-semibold tracking-[0.14em] sm:tracking-[0.22em] mt-3 opacity-80">
+              Building backend systems at enterprise scale.
             </p>
             <nav className="nav hidden lg:block" aria-label="In-page jump links">
-              <ul className="mt-16 w-max">
-                <li>
-                  <a className="group flex items-center py-3 active" href="#about">
-                    <span className="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-slate-200 group-focus-visible:w-16 group-focus-visible:bg-slate-200 motion-reduce:transition-none"></span>
-                    <span className="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-200 group-focus-visible:text-slate-200">About</span>
-                  </a>
-                </li>
-                <li>
-                <a className="group flex items-center py-3 active" href="#education">
-                    <span className="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-slate-200 group-focus-visible:w-16 group-focus-visible:bg-slate-200 motion-reduce:transition-none"></span>
-                    <span className="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-200 group-focus-visible:text-slate-200">Education</span>
-                  </a>
-                </li>
-                <li>
-                <a className="group flex items-center py-3 active" href="#experience">
-                    <span className="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-slate-200 group-focus-visible:w-16 group-focus-visible:bg-slate-200 motion-reduce:transition-none"></span>
-                    <span className="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-200 group-focus-visible:text-slate-200">Experience</span>
-                  </a>
-                </li>
-                <li>
-                <a className="group flex items-center py-3 active" href="#projects">
-                    <span className="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-slate-200 group-focus-visible:w-16 group-focus-visible:bg-slate-200 motion-reduce:transition-none"></span>
-                    <span className="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-200 group-focus-visible:text-slate-200">Projects</span>
-                  </a>
-                </li>
-                <li>
-                <a className="group flex items-center py-3 active" href="#playlist">
-                    <span className="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-slate-200 group-focus-visible:w-16 group-focus-visible:bg-slate-200 motion-reduce:transition-none"></span>
-                    <span className="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-200 group-focus-visible:text-slate-200">Playlist</span>
-                  </a>
-                </li>
-                <li>
-                <a className="group flex items-center py-3 active" href="#trivia">
-                    <span className="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-slate-200 group-focus-visible:w-16 group-focus-visible:bg-slate-200 motion-reduce:transition-none"></span>
-                    <span className="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-200 group-focus-visible:text-slate-200">Trivia</span>
-                  </a>
-                </li>
-                <li>
-                <a className="group flex items-center py-3 active" href="#contact">
-                    <span className="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-slate-200 group-focus-visible:w-16 group-focus-visible:bg-slate-200 motion-reduce:transition-none"></span>
-                    <span className="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-200 group-focus-visible:text-slate-200">Contact</span>
-                  </a>
-                </li>
+              <ul className="mt-12 w-max">
+                {navItems.map((item) => (
+                  <li key={item.id}>
+                    <a className="group flex items-center py-2.5 active" href={`#${item.id}`}>
+                      <span className="nav-indicator mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-slate-200 group-focus-visible:w-16 group-focus-visible:bg-slate-200 motion-reduce:transition-none"></span>
+                      <span className="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-200 group-focus-visible:text-slate-200">{item.label}</span>
+                    </a>
+                  </li>
+                ))}
               </ul>
             </nav>  
           </div>
 
-          <ul className="mt-8 flex space-x-5 text-slate-300" aria-label="Social media">
+          <ul className="theme-copy mt-8 flex flex-wrap gap-5" aria-label="Social media">
             {/* GitHub */}
             <li>
               <a
@@ -260,7 +291,7 @@ export default function Home() {
 
             <li>
               <a
-                className="block text-slate-400 hover:text-slate-200 transition-colors"
+                className="block hover:text-secondary transition-colors"
                 href="https://www.facebook.com/people/Gerald-Obuseh/pfbid02tsBCNNumU3fL5JshLqbCJKDwGVKevEhA6odg9CUP2Wn7rdbYwC8q5azdkQuNbToLl/"
                 target="_blank"
                 rel="noreferrer noopener"
@@ -314,30 +345,30 @@ export default function Home() {
     
 
         {/* Main Content */}
-        <main className="lg:ml-[250px] max-w-3xl mx-auto">
+        <main className="w-full max-w-3xl min-w-0 mx-auto lg:mx-0 lg:py-0">
           {/* Hero Section */}
-          <section id="home" className="h-screen flex flex-col justify-center">
-            <h2 className="text-lg font-semibold tracking-[0.22em] mb-4 opacity-80">A little context: most people know me as <span className="text-secondary">Geraldinho.</span></h2>
-            <h2 className="text-neutral-300 text-md font-semibold tracking-[2.0em] opacity-50">I focus on getting a little better every day.</h2>
-            <p className="text-neutral-300 text-md font-semibold tracking-[0.1em] mt-4 opacity-80">
-            Computer Science and Mathematics at Texas State University. I engineer systems where code, data, and mathematical reasoning intersect. My focus is performance, correctness, and building things that hold up under scale.
+          <section id="home" className="hero-section min-h-[calc(100svh-5rem)] lg:min-h-screen flex flex-col justify-center py-16 sm:py-20 lg:py-0">
+            <h2 className="text-base sm:text-lg font-semibold tracking-[0.12em] sm:tracking-[0.2em] mb-4 opacity-80">A little context: most people know me as <span className="text-secondary">Geraldinho.</span></h2>
+            <h2 className="theme-copy text-sm sm:text-base font-semibold tracking-[0.22em] sm:tracking-[0.6em] lg:tracking-[1.1em] opacity-50">I focus on getting a little better every day.</h2>
+            <p className="theme-copy text-md font-semibold tracking-[0.1em] mt-4 opacity-80">
+            Computer Science and Mathematics at Texas State University. Software Engineering intern at JPMorganChase. I enjoy designing backend systems that prioritize performance, reliability, and maintainability.
             </p>
             <a
               href="#projects"
-              className="mt-8 inline-block font-semibold border border-secondary text-secondary px-6 py-3 rounded hover:bg-secondary hover:text-black transition"
+              className="theme-button mt-8 inline-block font-semibold border px-6 py-3 rounded transition"
             >
               See work
             </a>
           </section>
 
           {/* About */}
-          <section id="about" className="py-24">
+          <section id="about" className="section-block py-16 sm:py-20 lg:py-24">
             <h2 className="text-3xl font-bold mb-8">About <span className="text-secondary">Me</span></h2>
             <div className="relative">
               {/* Mobile: Stack vertically */}
               <div className="md:hidden mb-6">
                 <Image 
-                  src="/1018.webp" 
+                  src={aboutImageSrc} 
                   alt="Gerald Obuseh" 
                   width={500} 
                   height={500} 
@@ -348,7 +379,7 @@ export default function Home() {
               {/* Desktop: Float left with proper spacing */}
               <div className="hidden md:block float-left mr-6 mb-4 w-72 h-96 flex-shrink-0">
                 <Image 
-                  src="/1018.webp" 
+                  src={aboutImageSrc} 
                   alt="Gerald Obuseh" 
                   width={288} 
                   height={384} 
@@ -356,19 +387,12 @@ export default function Home() {
                 />
               </div>
               
-              <div className="text-neutral-300 max-w-3xl text-sm font-semibold tracking-[0.06em] opacity-80">
+              <div className="theme-copy max-w-3xl text-sm font-semibold tracking-[0.06em] opacity-80">
                 <p className="mb-3">
-                  I&apos;m originally from Delta State, Nigeria, and currently studying Computer Science and Mathematics at Texas State University, 
-                  where I focus on building strong technical foundations with real world leverage.
+                  I&apos;m a software engineer focused on backend engineering, distributed systems, and developer infrastructure. Over the past few years, I&apos;ve worked across enterprise fintech, cloud platforms, and applied computer vision research, building software that solves real operational problems.
                 </p>
                 <p className="mb-3">
-                  My path into technology started with curiosity about how systems behave under pressure and how thoughtful design can make them 
-                  resilient.
-                </p>
-                <p>
-                  Outside of coding, I enjoy playing soccer, a discipline I&apos;ve practiced since early childhood in Nigeria. Playing has shaped how I think about positioning, timing, and decision-making under pressure. 
-                  I also enjoy competitive, systems driven games such as EAFC and Mortal Kombat, which reward pattern recognition 
-                  and precise execution.
+                  Most recently, I started a Software Engineering internship with JPMorganChase&apos;s Payments Technology team, where I developed an internal tool for tracking API deployments across environments. The platform aggregates deployment metadata from AWS, integrates with internal artifact repositories, and gives engineers a centralized view of deployed services.
                 </p>
               </div>
               <div className="clear-both"></div>
@@ -376,146 +400,198 @@ export default function Home() {
           </section>
 
           {/* Education */}
-          <section id="education" className="py-24">
+          <section id="education" className="section-block py-16 sm:py-20 lg:py-24">
             <h2 className="text-3xl font-bold mb-6 text-secondary">Education</h2>
             <div className="space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-neutral-300 mb-2">Texas State University, USA</h3>
-                <p className="text-gray-400 text-sm font-semibold">Bachelor of Science in Computer Science </p>
-                <p className="text-gray-400 text-sm font-semibold">Minor in Mathematics (Expected 2026)</p>
+                <h3 className="theme-copy text-xl font-bold mb-2">Texas State University, USA</h3>
+                <p className="theme-muted text-sm font-semibold">Bachelor of Science in Computer Science </p>
+                <p className="theme-muted text-sm font-semibold">Minor in Mathematics</p>
+                <p className="theme-muted text-sm font-semibold">Expected December 2026</p>
+                <ul className="mt-3 ml-4 space-y-2" aria-label="Texas State honors">
+                  <li className="theme-muted custom-bullet text-sm font-bold">President&apos;s List, Spring 2026 - 4.0 GPA</li>
+                </ul>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-neutral-300 mb-2">University of Lagos, Nigeria</h3>
-                <p className="text-gray-400 text-sm font-semibold">Bachelor of Engineering in Systems Engineering</p>
-                <p className="text-gray-400 text-sm font-semibold">Visiting Undergraduate (2021-2022)</p>
+                <h3 className="theme-copy text-xl font-bold mb-2">University of Lagos, Nigeria</h3>
+                <p className="theme-muted text-sm font-semibold">Bachelor of Engineering in Systems Engineering</p>
+                <p className="theme-muted text-sm font-semibold">Visiting Undergraduate, 2021-2022</p>
+              </div>
+              <div className="theme-card border rounded p-5">
+                <h3 className="theme-copy text-md font-bold uppercase tracking-[0.16em] mb-2">Relevant Coursework</h3>
+                <p className="theme-muted text-sm font-semibold">
+                  Data Structures &amp; Algorithms, Software Engineering, Database Systems, Artificial Intelligence, Computer Security, Advanced Numerical Analysis, Linear Algebra, Probability &amp; Statistics.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Certifications */}
+          <section id="certifications" className="section-block py-16 sm:py-20 lg:py-24">
+            <h2 className="text-3xl font-bold mb-6 text-secondary">Certifications</h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="theme-card p-6 border rounded transition">
+                <div className="flex flex-col gap-1 mb-4">
+                  <h3 className="text-xl font-semibold">AWS Certified Cloud Practitioner</h3>
+                  <p className="theme-copy text-sm font-semibold">Amazon Web Services</p>
+                  <p className="theme-muted text-sm font-semibold">2026</p>
+                </div>
+                <p className="theme-muted max-w-xl text-sm font-semibold tracking-[0.08em]">
+                  Cloud fundamentals, AWS services, security, architecture, pricing, and operational best practices.
+                </p>
+              </div>
+              <div className="theme-card p-6 border rounded transition">
+                <div className="flex flex-col gap-1 mb-4">
+                  <h3 className="text-xl font-semibold">JPMorganChase SWE Simulation</h3>
+                  <p className="theme-copy text-sm font-semibold">Forage</p>
+                  <p className="theme-muted text-sm font-semibold">January 2026</p>
+                </div>
+                <p className="theme-muted max-w-xl text-sm font-semibold tracking-[0.08em]">
+                  Completed backend engineering simulation using Spring Boot, Kafka, REST APIs, Spring Data JPA, and event-driven transaction processing.
+                </p>
               </div>
             </div>
           </section>
 
           {/* Experience */}
-          <section id="experience" className="py-24">
+          <section id="experience" className="section-block py-16 sm:py-20 lg:py-24">
             <h2 className="text-3xl font-bold mb-6 text-secondary">Professional Experience</h2>
             <div className="space-y-8">
               <div className="border-l-2 border-secondary pl-6 pb-6">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
                   <h3 className="text-xl font-semibold">Software Engineering Intern</h3>
-                  <span className="italic text-sm text-neutral-500 mt-1 md:mt-0">JPMorgan Chase, US Private Bank</span>
+                  <span className="theme-muted italic text-sm mt-1 md:mt-0">JPMorganChase, Payments Technology</span>
                 </div>
-                <p className="text-sm text-neutral-400 mb-2">Summer 2026</p>
-                <p className="text-neutral-400 max-w-xl text-sm font-semibold tracking-[0.12em]">
-                  Incoming Software Engineering Intern for Summer 2026, joining a team where reliability, performance, and precision matter at scale.
+                <p className="theme-muted text-sm mb-2">Summer 2026</p>
+                <p className="theme-muted max-w-xl text-sm font-semibold tracking-[0.12em] mb-4">
+                  Currently a Software Engineering Intern on the Payments Technology team, building internal developer tooling to improve API deployment visibility across environments.
+                  Delivered the initial platform ahead of schedule and was subsequently entrusted with developing an AI-powered Pull Request Bot to review, govern, and recommend fixes for API specifications, mocks, and test suites, improving code quality and deployment reliability.
+                  Also a member of JPMC ATX Soccer
                 </p>
               </div>
               
               <div className="border-l-2 border-secondary pl-6 pb-6">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
                   <h3 className="text-xl font-semibold tracking-[0.20em]">Engineering Student Assistant</h3>
-                  <span className="italic text-sm text-neutral-500 mt-1 md:mt-0">Bruce and Ingram School of Engineering, Texas State University</span>
+                  <span className="theme-muted italic text-sm mt-1 md:mt-0">Bruce and Ingram School of Engineering, Texas State University</span>
                 </div>
-                <p className="text-sm text-neutral-400 mb-2">September 2025 - Present</p>
-                <p className="text-neutral-400 max-w-xl text-sm font-semibold tracking-[0.12em]">
-                Design and automate 3D printer workflows using embedded C++ on Raspberry Pi, cutting manual intervention and improving throughput. 
-                Operate close to hardware, optimized constrained systems, and shipped tooling that actually gets used.
-                </p>
+                <p className="theme-muted text-sm mb-2">September 2025 - May 2026</p>
+                <p className="theme-muted max-w-xl text-sm font-semibold tracking-[0.12em]">
+                  Developed backend tooling in Python to extend Raspberry Pi–powered 3D printing infrastructure,
+                  building a webhook ingestion pipeline that captures print lifecycle events and persists them to PostgreSQL, enabling centralized reporting, operational analytics, and improved visibility into manufacturing workflows.                </p>
               </div>
               
               <div className="border-l-2 border-secondary pl-6 pb-6">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
                   <h3 className="text-xl font-semibold">Software Engineering Intern</h3>
-                  <span className="italic text-sm text-neutral-500 mt-1 md:mt-0">Paystrait, Nigeria</span>
+                  <span className="theme-muted italic text-sm mt-1 md:mt-0">Paystrait</span>
                 </div>
-                <p className="text-sm text-neutral-400 mb-2">May 2025 - August 2025</p>
-                <p className="text-neutral-400 max-w-xl text-sm font-semibold tracking-[0.12em]">
-                Refactored and stabilized the admin dashboard using TypeScript and Node.js, improving how user accounts and transactions are managed.
-                Focused on clarity, maintainability, and building interfaces that don’t break under real usage.
-                </p>
-              </div>
-              
-              <div className="border-l-2 border-secondary pl-6 pb-6">
-                <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
-                  <h3 className="text-xl font-semibold">Client Manager</h3>
-                  <span className="italic text-sm text-neutral-500 mt-1 md:mt-0">Student Union, Truman State University</span>
-                </div>
-                <p className="text-sm text-neutral-400 mb-2">August 2023 - May 2025</p>
-                <p className="text-neutral-400 max-w-xl text-sm font-semibold tracking-[0.12em]">
-                  Managed client relationships and ensured timely delivery of services.
+                <p className="theme-muted text-sm mb-2">May 2025 - August 2025</p>
+                <p className="theme-muted max-w-xl text-sm font-semibold tracking-[0.12em]">
+                Maintained 13+ production payment microservices processing more than 20,000 monthly transactions with 99.9% availability.
+                Refactored a large React/TypeScript administration platform into reusable components, reducing code duplication by 35% and improving maintainability.
                 </p>
               </div>
               
               <div className="border-l-2 border-secondary pl-6">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
                   <h3 className="text-xl font-semibold">Computer Vision Research Intern</h3>
-                  <span className="italic text-sm text-neutral-500 mt-1 md:mt-0">School of Industrial Engineering, Purdue University</span>
+                  <span className="theme-muted italic text-sm mt-1 md:mt-0">Purdue University, School of Industrial Engineering</span>
                 </div>
-                <p className="text-sm text-neutral-400 mb-2">May 2023 - August 2023</p>
-                <p className="text-neutral-400 max-w-xl text-sm font-semibold tracking-[0.12em]">
-                Developed a computer vision system using Python and OpenCV to identify unsafe conditions and reduce workplace injury risk. 
-                Translated research objectives into working code and validated results with real data.
+                <p className="theme-muted text-sm mb-2">May 2023 - August 2023</p>
+                <p className="theme-muted max-w-xl text-sm font-semibold tracking-[0.12em]">
+                Contributed to a Python/OpenCV ergonomic risk detection system for an Amazon-sponsored research project by testing pose-estimation pipelines, running simulations, and supporting a 20% accuracy improvement.
                 </p>
               </div>
             </div>
           </section>
 
           {/* Projects */}
-          <section id="projects" className="py-24">
+          <section id="projects" className="section-block py-16 sm:py-20 lg:py-24">
             <h2 className="text-3xl font-bold mb-6 text-secondary">Selected Projects</h2>
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="p-6 border border-gray-800 rounded hover:border-secondary transition">
-                <h3 className="text-xl font-semibold mb-3">International Girls Academy LMS</h3>
-                <p className="text-neutral-400 max-w-xl text-md font-semibold tracking-[0.05em] mb-2">Developed a Learning Management System for the International Girls Academy during JPMC’s Code for Good Hackathon, leveraging Flask and Node.js for backend services, React for the frontend, and Clerk for secure authentication.</p>
-                <div className="flex gap-3">
-                  <a href="https://www.theinternationalgirlsacademy.com/" className="text-secondary hover:underline text-sm font-semibold">View Project →</a>
-                  <a href="https://github.com/cfgtexas25/Team-37" className="text-gray-500 hover:text-secondary text-sm font-semibold">GitHub →</a>
-                </div>
+              <div className="theme-card p-6 border rounded transition">
+                <h3 className="text-xl font-semibold mb-3">Mock Deployment Dashboard</h3>
+                <p className="theme-copy text-xs font-semibold uppercase tracking-[0.16em] mb-3">Java, Spring Boot, AWS Lambda, React, Node.js, AWS S3</p>
+                <p className="theme-muted max-w-xl text-md font-semibold tracking-[0.05em] mb-4">Designed and developed an internal deployment platform that aggregates API deployment metadata from AWS S3, enabling engineers to track deployed versions, build history, and environment status from a unified dashboard.</p>
+                <span className="theme-muted text-sm font-semibold">Private internal project</span>
               </div>
-              <div className="p-6 border border-gray-800 rounded hover:border-secondary transition">
+              <div className="theme-card p-6 border rounded transition">
                 <h3 className="text-xl font-semibold mb-3">TickerStats</h3>
-                <p className="text-neutral-400 max-w-xl text-md font-semibold tracking-[0.05em] mb-2">Built a real-time financial analytics web application to surface actionable statistics and market insights across multiple financial instruments, leveraging a React frontend, a Flask-based backend, and MongoDB for scalable data persistence.</p>
+                <p className="theme-copy text-xs font-semibold uppercase tracking-[0.16em] mb-3">React, Flask, MongoDB, Auth0</p>
+                <p className="theme-muted max-w-xl text-md font-semibold tracking-[0.05em] mb-4">Developed a financial analytics platform that automates comparable company analysis, DCF valuation, and AI-generated investment pitch decks, leveraging Flask APIs, data processing pipelines, and intelligent caching to achieve 110 ms p95 latency and a 45% reduction in database reads.</p>
                 <div className="flex gap-3">
-                  <a href="https://tickerstats-1.onrender.com/" className="text-secondary hover:underline text-sm font-semibold">View Project →</a>
-                  <a href="https://github.com/geraldobuseh/tickerstats" className="text-gray-500 hover:text-secondary text-sm font-semibold">GitHub →</a>
+                  <a href="https://www.tickerstats.app/" className="text-secondary hover:underline text-sm font-semibold">View Project</a>
+                  <a href="https://github.com/geraldobuseh/tickerstats" className="theme-muted hover:text-secondary text-sm font-semibold">GitHub</a>
                 </div>
               </div>
-              <div className="p-6 border border-gray-800 rounded hover:border-secondary transition">
+              <div className="theme-card p-6 border rounded transition">
                 <h3 className="text-xl font-semibold mb-3">EaseAccess</h3>
-                <p className="text-neutral-400 max-w-xl text-md font-semibold tracking-[0.05em] mb-2">Developed a web application to help users find the best accessible routes to their destinations using Gemini API, React, Node.js, and PostgreSQL.</p>
+                <p className="theme-copy text-xs font-semibold uppercase tracking-[0.16em] mb-3">Python, Flask, HTML/CSS/JavaScript, Gemini API</p>
+                <p className="theme-muted max-w-xl text-md font-semibold tracking-[0.05em] mb-4">Built a full-stack accessibility platform with Flask, JavaScript, and Gemini API, delivering intelligent building search, accessibility recommendations, and computer vision–powered color detection. Recognized with the Devpost 2024 Best Accessibility Hack award.</p>
                 <div className="flex gap-3">
-                  <a href="https://devpost.com/software/easeaccess" className="text-secondary hover:underline text-sm font-semibold">View Project →</a>
-                  <a href="https://github.com/geraldobuseh/Building-With-AI" className="text-gray-500 hover:text-secondary text-sm font-semibold">GitHub →</a>
+                  <a href="https://devpost.com/software/easeaccess" className="text-secondary hover:underline text-sm font-semibold">View Project</a>
+                  <a href="https://github.com/geraldobuseh/Building-With-AI" className="theme-muted hover:text-secondary text-sm font-semibold">GitHub</a>
                 </div>
               </div>
-              <div className="p-6 border border-gray-800 rounded hover:border-secondary transition">
-                <h3 className="text-xl font-semibold mb-3">LiveWeather</h3>
-                <p className="text-neutral-400 max-w-xl text-md font-semibold tracking-[0.05em] mb-2">Developed a weather app using React, Node.js, and OpenWeatherMap API.</p>
+              <div className="theme-card p-6 border rounded transition">
+                <h3 className="text-xl font-semibold mb-3">International Girls Academy LMS</h3>
+                <p className="theme-copy text-xs font-semibold uppercase tracking-[0.16em] mb-3">Flask, Node.js, React, Clerk</p>
+                <p className="theme-muted max-w-xl text-md font-semibold tracking-[0.05em] mb-4">Built a mentorship learning management system during JPMorganChase Code for Good, implementing secure authentication, relational data modeling, and a containerized MVP for a zero-failure demo to engineering leadership.</p>
                 <div className="flex gap-3">
-                  <a href="https://geraldobuseh.github.io/weather-app/" className="text-secondary hover:underline text-sm font-semibold">View Project →</a>
-                  <a href="https://github.com/geraldobuseh/weather-app" className="text-gray-500 hover:text-secondary text-sm font-semibold">GitHub →</a>
+                  <a href="https://www.theinternationalgirlsacademy.com/" className="text-secondary hover:underline text-sm font-semibold">View Project</a>
+                  <a href="https://github.com/cfgtexas25/Team-37" className="theme-muted hover:text-secondary text-sm font-semibold">GitHub</a>
                 </div>
               </div>
             </div>
           </section>
 
+          {/* Skills */}
+          <section id="skills" className="section-block py-16 sm:py-20 lg:py-24">
+            <h2 className="text-3xl font-bold mb-6 text-secondary">Skills</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="theme-card p-5 border rounded transition">
+                <h3 className="theme-copy text-sm font-bold uppercase tracking-[0.16em] mb-2">Languages</h3>
+                <p className="theme-muted text-sm font-semibold">Python, Java, TypeScript, JavaScript, C/C++, SQL, Go</p>
+              </div>
+              <div className="theme-card p-5 border rounded transition">
+                <h3 className="theme-copy text-sm font-bold uppercase tracking-[0.16em] mb-2">Backend</h3>
+                <p className="theme-muted text-sm font-semibold">Spring Boot, Flask, REST APIs, Node.js, Kafka, JWT, SQLAlchemy, Spring Data JPA</p>
+              </div>
+              <div className="theme-card p-5 border rounded transition">
+                <h3 className="theme-copy text-sm font-bold uppercase tracking-[0.16em] mb-2">Cloud &amp; DevOps</h3>
+                <p className="theme-muted text-sm font-semibold">AWS, AWS Lambda, Amazon S3, Docker, Git, CI/CD, Jenkins, Linux, Terraform</p>
+              </div>
+              <div className="theme-card p-5 border rounded transition">
+                <h3 className="theme-copy text-sm font-bold uppercase tracking-[0.16em] mb-2">Databases</h3>
+                <p className="theme-muted text-sm font-semibold">PostgreSQL, MongoDB</p>
+              </div>
+            </div>
+          </section>
+
           {/* Playlist */}
-          <section id="playlist" className="py-24">
+          <section id="playlist" className="section-block py-16 sm:py-20 lg:py-24">
             <h2 className="text-3xl font-bold mb-6 text-secondary">Gerald&apos;s Playlist</h2>
-            <div className="max-w-xl">
-              <p className="text-neutral-400 mb-4 font-light text-sm tracking-[0.09em]">
+            <div className="max-w-xxl">
+              <p className="theme-muted mb-4 font-light text-sm tracking-[0.09em]">
                 A personally curated selection of tracks I&apos;m currently listening to                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
               </p>
-              <div className="border border-gray-800 rounded-lg p-6 hover:border-secondary transition">
+              <div className="theme-card border rounded-lg p-3 sm:p-5 md:p-6 transition w-full max-w-[648px] overflow-hidden">
                 <iframe
-                  className="rounded w-full"
-                  src="https://embed.music.apple.com/us/playlist/winter-25/pl.u-xlyNqJdIJ7dYpAM"
-                  height="500"
-                  allow="autoplay *; encrypted-media *;"
-                  frameBorder="0"
+                  className="playlist-frame rounded block w-full"
+                  src="https://embed.music.apple.com/us/playlist/summer-26/pl.u-kv9lbZVFJ3jgWvb"
+                  height="450"
+                  width="100%"
+                  allow="autoplay *; encrypted-media *; fullscreen *;"
+                  frameBorder="2px solid transparent"
+                  sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
                 />
               </div>
             </div>
           </section>
 
           {/* Trivia */}
-          <section id="trivia" className="py-24">
+          <section id="trivia" className="section-block py-16 sm:py-20 lg:py-24">
             <h2 className="text-3xl font-bold mb-6 text-secondary">Trivia</h2>
             <div className="max-w-2xl">
               <TriviaQuiz />
@@ -523,22 +599,28 @@ export default function Home() {
           </section>
 
           {/* Contact */}
-          <section id="contact" className="py-24 text-center">
+          <section id="contact" className="section-block py-16 sm:py-20 lg:py-24 text-center">
             <h2 className="text-3xl font-bold mb-6">Contact <span className="text-secondary">Me</span></h2>
-            <p className="text-gray-400 mb-6">
-              Direct, intentional communication only.
+            <p className="theme-muted mb-6">
+                I love meeting new people, hearing different perspectives, and learning from interesting conversations.
+                Feel free to reach out, even if it&apos;s just to say hello.
             </p>
             <a
               href="mailto:geraldobuseh81@gmail.com"
-              className="inline-block border border-secondary text-secondary px-6 py-3 rounded hover:bg-secondary hover:text-black transition font-semibold"
+              className="theme-button inline-block border px-6 py-3 rounded transition font-semibold"
             >
               Email Me
             </a>
           </section>
-          <p className="text-neutral-400 mt-5 font-semibold text-xs tracking-[0.25em] mx-auto text-center max-w-prose">Loosely designed by <span className="text-secondary">Gerald</span></p>
+          <p className="theme-muted mt-5 font-semibold text-xs tracking-[0.25em] mx-auto text-center max-w-prose">Loosely designed by <span className="text-secondary">Gerald</span></p>
         </main>
       </div>
     </div>
     </>
   );
 }
+
+
+
+
+
